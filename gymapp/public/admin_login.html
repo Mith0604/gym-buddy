@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login - Gym Management</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Login</h1>
+  </header>
+  <main>
+    <form id="adminLoginForm">
+      <input type="email" id="adminEmail" placeholder="Email" required>
+      <input type="password" id="adminPassword" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </main>
+
+  <!-- Firebase SDK scripts (ensure these paths are correct) -->
+  <script src="/__/firebase/11.5.0/firebase-app-compat.js"></script>
+  <script src="/__/firebase/11.5.0/firebase-auth-compat.js"></script>
+  <script src="/__/firebase/11.5.0/firebase-firestore-compat.js"></script>
+  <!-- If you use the emulator, you can add ?useEmulator=true -->
+  <script src="/__/firebase/init.js"></script>
+
+  <!-- Custom scripts: Firebase config, common functions, and admin functions -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+
+  <script>
+    // Handle admin login form submission
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value;
+      const password = document.getElementById('adminPassword').value;
+      adminLogin(email, password);  // Defined in admin.js, uses auth from firebase-config.js
+    });
+  </script>
+</body>
+</html>

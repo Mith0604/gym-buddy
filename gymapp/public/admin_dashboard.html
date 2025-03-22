@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Gym Management</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+  </header>
+  <div class="container">
+    <!-- Add Member Section -->
+    <section id="addMemberSection">
+      <h2>Add Member</h2>
+      <form id="addMemberForm">
+        <input type="text" id="memberName" placeholder="Member Name" required>
+        <input type="email" id="memberEmail" placeholder="Email" required>
+        <input type="text" id="membershipType" placeholder="Membership Type" required>
+        <input type="text" id="feePackage" placeholder="Fee Package" required>
+        <button type="submit">Add Member</button>
+      </form>
+    </section>
+
+    <!-- Update/Delete Member Section -->
+    <section id="updateDeleteMemberSection">
+      <h2>Update/Delete Member</h2>
+      <!-- Update Member Form -->
+      <form id="updateMemberForm">
+        <input type="text" id="updateMemberId" placeholder="Member ID" required>
+        <input type="text" id="updateMemberName" placeholder="Updated Name">
+        <input type="email" id="updateMemberEmail" placeholder="Updated Email">
+        <input type="text" id="updateMembershipType" placeholder="Updated Membership Type">
+        <button type="submit">Update Member</button>
+      </form>
+      <!-- Delete Member Form -->
+      <form id="deleteMemberForm">
+        <input type="text" id="deleteMemberId" placeholder="Member ID" required>
+        <button type="submit">Delete Member</button>
+      </form>
+    </section>
+
+    <!-- Create Bill Section -->
+    <section id="createBillSection">
+      <h2>Create Bill</h2>
+      <form id="createBillForm">
+        <input type="text" id="billMemberId" placeholder="Member ID" required>
+        <input type="number" id="billAmount" placeholder="Bill Amount" required>
+        <input type="date" id="billDueDate" placeholder="Due Date" required>
+        <button type="submit">Create Bill</button>
+      </form>
+    </section>
+
+    <!-- Assign Fee Package Section -->
+    <section id="assignFeePackageSection">
+      <h2>Assign Fee Package</h2>
+      <form id="assignFeePackageForm">
+        <input type="text" id="feeMemberId" placeholder="Member ID" required>
+        <input type="text" id="newFeePackage" placeholder="New Fee Package" required>
+        <button type="submit">Assign Fee Package</button>
+      </form>
+    </section>
+
+    <!-- Assign Notification Section -->
+    <section id="assignNotificationSection">
+      <h2>Assign Monthly Notification</h2>
+      <form id="assignNotificationForm">
+        <input type="text" id="notificationMemberId" placeholder="Member ID" required>
+        <input type="text" id="notificationMessage" placeholder="Notification Message" required>
+        <button type="submit">Assign Notification</button>
+      </form>
+    </section>
+
+    <!-- Report Export Section -->
+    <section id="exportReportSection">
+      <h2>Export Report</h2>
+      <button id="exportReportBtn">Export Members Report</button>
+    </section>
+  </div>
+
+  <!-- Include Firebase Config, Common, and Admin scripts -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    // Event Listener: Add Member
+    document.getElementById('addMemberForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const memberData = {
+        name: document.getElementById('memberName').value,
+        email: document.getElementById('memberEmail').value,
+        membershipType: document.getElementById('membershipType').value,
+        feePackage: document.getElementById('feePackage').value,
+        notifications: []
+      };
+      addMember(memberData);
+    });
+
+    // Event Listener: Update Member
+    document.getElementById('updateMemberForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const memberId = document.getElementById('updateMemberId').value;
+      const updatedData = {};
+      const name = document.getElementById('updateMemberName').value;
+      const email = document.getElementById('updateMemberEmail').value;
+      const membershipType = document.getElementById('updateMembershipType').value;
+      if(name) updatedData.name = name;
+      if(email) updatedData.email = email;
+      if(membershipType) updatedData.membershipType = membershipType;
+      updateMember(memberId, updatedData);
+    });
+
+    // Event Listener: Delete Member
+    document.getElementById('deleteMemberForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const memberId = document.getElementById('deleteMemberId').value;
+      deleteMember(memberId);
+    });
+
+    // Event Listener: Create Bill
+    document.getElementById('createBillForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const billData = {
+        memberId: document.getElementById('billMemberId').value,
+        amount: parseFloat(document.getElementById('billAmount').value),
+        dueDate: document.getElementById('billDueDate').value,
+        createdAt: new Date().toISOString()
+      };
+      createBill(billData);
+    });
+
+    // Event Listener: Assign Fee Package
+    document.getElementById('assignFeePackageForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const memberId = document.getElementById('feeMemberId').value;
+      const feePackage = document.getElementById('newFeePackage').value;
+      assignFeePackage(memberId, feePackage);
+    });
+
+    // Event Listener: Assign Notification
+    document.getElementById('assignNotificationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const memberId = document.getElementById('notificationMemberId').value;
+      const notification = document.getElementById('notificationMessage').value;
+      assignNotification(memberId, notification);
+    });
+
+    // Event Listener: Export Report
+    document.getElementById('exportReportBtn').addEventListener('click', function() {
+      exportReport('members'); // Exporting the members collection as a report
+    });
+  </script>
+</body>
+</html>
